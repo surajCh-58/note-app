@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — NoteKeep</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"DM Serif Display"', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-900 font-sans text-slate-100 min-h-screen flex items-center justify-center p-4">
+
+  <div class="w-full max-w-md">
+
+    <!-- Logo / brand -->
+    <div class="text-center mb-8">
+      <span class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-amber-400 mb-4">
+        <svg class="w-6 h-6 text-slate-900" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+        </svg>
+      </span>
+      <h1 class="font-display text-3xl text-white">NoteKeep</h1>
+      <p class="text-slate-400 text-sm mt-1">Your thoughts, organised.</p>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-xl shadow-slate-900/50">
+
+      {% if messages %}
+      <div class="mb-5 space-y-2">
+        {% for message in messages %}
+        <div class="flex items-start gap-2 bg-red-900/40 border border-red-700/50 text-red-300 text-sm rounded-lg px-4 py-2.5">
+          <svg class="w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <form method="POST" class="space-y-5">
+        {% csrf_token %}
+        {% for field in form %}
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+          <p class="mt-1 text-xs text-red-400">{{ field.errors|join:", " }}</p>
+          {% endif %}
+        </div>
+        {% endfor %}
+
+        <button type="submit"
+          class="w-full bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg py-2.5 text-sm transition duration-150 mt-2">
+          Sign in
+        </button>
+      </form>
+
+      <p class="text-center text-sm text-slate-400 mt-6">
+        No account yet?
+        <a href="{% url 'Profile:register' %}" class="text-amber-400 hover:text-amber-300 font-medium transition">Create one</a>
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>
